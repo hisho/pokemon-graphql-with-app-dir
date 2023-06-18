@@ -5,8 +5,10 @@
   "scripts": {
     "dev": "run-p dev:*",
     "dev:next": "next dev -p 3000",
+    "dev:codegen": "pnpm build:codegen --watch",
     "build": "run-s build:next",
     "build:next": "next build",
+    "build:codegen": "graphql-codegen --config codegen.ts",
     "start": "next start",
     "lint": "run-p lint:*",
     "lint:next": "next lint --dir src --ignore-path .prettierignore --max-warnings 0",
@@ -18,6 +20,7 @@
   },
   "dependencies": {
     "@t3-oss/env-nextjs": "^0.4.1",
+    "graphql": "^16.6.0",
     "next": "13.4.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -26,6 +29,9 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "4.0.1",
+    "@graphql-codegen/client-preset": "4.0.0",
+    "@graphql-codegen/schema-ast": "^4.0.0",
     "@tsconfig/strictest": "^2.0.1",
     "@types/node": "20.3.1",
     "@types/react": "18.2.12",
