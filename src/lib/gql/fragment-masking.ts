@@ -1,10 +1,9 @@
 import {
-  DocumentTypeDecoration,
   ResultOf,
+  DocumentTypeDecoration,
   TypedDocumentNode,
 } from '@graphql-typed-document-node/core'
 import { FragmentDefinitionNode } from 'graphql'
-
 import { Incremental } from './graphql'
 
 export type FragmentType<
@@ -50,7 +49,7 @@ export function useFragment<TType>(
     | ReadonlyArray<FragmentType<DocumentTypeDecoration<TType, any>>>
     | null
     | undefined
-): ReadonlyArray<TType> | TType | null | undefined {
+): TType | ReadonlyArray<TType> | null | undefined {
   return fragmentType as any
 }
 

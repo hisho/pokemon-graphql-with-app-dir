@@ -1,4 +1,5 @@
 /* eslint-disable */
+import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core'
 export type Maybe<T> = T | null
 export type InputMaybe<T> = Maybe<T>
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -119,3 +120,91 @@ export type QueryPokemonArgs = {
 export type QueryPokemonsArgs = {
   first: Scalars['Int']['input']
 }
+
+export type PokemonListQueryQueryVariables = Exact<{ [key: string]: never }>
+
+export type PokemonListQueryQuery = {
+  __typename?: 'Query'
+  pokemons?: Array<
+    | ({ __typename?: 'Pokemon'; id: string } & {
+        ' $fragmentRefs'?: {
+          PokemonCard_PokemonFragment: PokemonCard_PokemonFragment
+        }
+      })
+    | null
+  > | null
+}
+
+export type PokemonCard_PokemonFragment = {
+  __typename?: 'Pokemon'
+  name?: string | null
+} & { ' $fragmentName'?: 'PokemonCard_PokemonFragment' }
+
+export const PokemonCard_PokemonFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'PokemonCard_pokemon' },
+      typeCondition: {
+        kind: 'NamedType',
+        name: { kind: 'Name', value: 'Pokemon' },
+      },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [{ kind: 'Field', name: { kind: 'Name', value: 'name' } }],
+      },
+    },
+  ],
+} as unknown as DocumentNode<PokemonCard_PokemonFragment, unknown>
+export const PokemonListQueryDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'PokemonListQuery' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'pokemons' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'first' },
+                value: { kind: 'IntValue', value: '999' },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                {
+                  kind: 'FragmentSpread',
+                  name: { kind: 'Name', value: 'PokemonCard_pokemon' },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'PokemonCard_pokemon' },
+      typeCondition: {
+        kind: 'NamedType',
+        name: { kind: 'Name', value: 'Pokemon' },
+      },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [{ kind: 'Field', name: { kind: 'Name', value: 'name' } }],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  PokemonListQueryQuery,
+  PokemonListQueryQueryVariables
+>
