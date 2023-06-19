@@ -1,4 +1,4 @@
-import { PokemonList } from '@/app/_component/pokemon-list'
+import { PokemonList } from '@/app/(root)/_component/pokemon-list'
 import { Suspense } from 'react'
 
 const Page = async () => {
