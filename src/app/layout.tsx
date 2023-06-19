@@ -12,7 +12,7 @@ type Props = {
 
 const Layout = ({ children }: Props) => {
   return (
-    <html lang="en">
+    <html lang="ja">
       <body>{children}</body>
     </html>
   )
