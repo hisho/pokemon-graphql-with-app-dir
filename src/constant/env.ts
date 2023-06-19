@@ -3,12 +3,14 @@ import { z } from 'zod'
 
 export const env = createEnv({
   client: {
+    NEXT_PUBLIC_GRAPHQL_ENDPOINT: z.string().min(1),
     NEXT_PUBLIC_LOCAL_ENV: z.enum(['development', 'production'] as const),
     NEXT_PUBLIC_NODE_ENV: z.enum(['development', 'production'] as const),
     NEXT_PUBLIC_PORT: z.coerce.number().int().catch(3000),
     NEXT_PUBLIC_VERCEL_URL: z.string().min(1).catch(''),
   },
   runtimeEnv: {
+    NEXT_PUBLIC_GRAPHQL_ENDPOINT: process.env['NEXT_PUBLIC_GRAPHQL_ENDPOINT'],
     NEXT_PUBLIC_LOCAL_ENV: process.env['NEXT_PUBLIC_LOCAL_ENV'],
     NEXT_PUBLIC_NODE_ENV: process.env['NODE_ENV'],
     NEXT_PUBLIC_PORT: process.env['NEXT_PUBLIC_PORT'],
