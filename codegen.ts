@@ -1,5 +1,7 @@
 import type { CodegenConfig } from '@graphql-codegen/cli'
 
+import { env } from '@/constant/env'
+
 const config: CodegenConfig = {
   documents: 'src/**/*.tsx',
   generates: {
@@ -16,7 +18,7 @@ const config: CodegenConfig = {
   },
   ignoreNoDocuments: true,
   overwrite: true,
-  schema: 'https://graphql-pokemon2.vercel.app/',
+  schema: env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,
 }
 
 export default config
