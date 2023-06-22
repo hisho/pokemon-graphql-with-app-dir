@@ -12,6 +12,19 @@ const config: CodegenConfig = {
       plugins: ['schema-ast'],
     },
     'src/lib/gql/': {
+      config: {
+        defaultScalarType: 'unknown',
+        enumsAsConst: true,
+        exactOptionalPropertyTypes: true,
+        immutableTypes: true,
+        scalars: {
+          DateTime: 'string',
+          createdAt: 'string',
+          updatedAt: 'string',
+        },
+        strictScalars: true,
+        useTypeImports: true,
+      },
       plugins: [],
       preset: 'client',
     },
