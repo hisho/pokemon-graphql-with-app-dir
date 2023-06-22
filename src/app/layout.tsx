@@ -10,11 +10,10 @@ type Props = {
   children: ReactNode
 }
 
-const Layout = ({ children }: Props) => {
+export default function ({ children }: Props) {
   return (
     <html lang="ja">
       <body>{children}</body>
     </html>
   )
 }
-export default Layout

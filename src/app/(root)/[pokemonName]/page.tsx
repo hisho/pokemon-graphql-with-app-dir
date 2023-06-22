@@ -16,7 +16,7 @@ type Props = {
   }
 }
 
-const Page = async ({ params }: Props) => {
+export default async function ({ params }: Props) {
   const { pokemon } = await createGraphQLClient().request(
     PokemonDetailDocument,
     {
@@ -26,5 +26,3 @@ const Page = async ({ params }: Props) => {
 
   return <div>{pokemon && <PokemonCard pokemon={pokemon} />}</div>
 }
-
-export default Page

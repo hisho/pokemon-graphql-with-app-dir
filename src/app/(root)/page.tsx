@@ -1,7 +1,7 @@
 import { PokemonList } from '@/app/(root)/_component/pokemon-list'
 import { Suspense } from 'react'
 
-const Page = async () => {
+export default async function () {
   return (
     <div className={'max-w-4xl mx-auto'}>
       <Suspense fallback={<div>loading...</div>}>
@@ -10,4 +10,3 @@ const Page = async () => {
     </div>
   )
 }
-export default Page
