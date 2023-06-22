@@ -1,6 +1,9 @@
 import type { CodegenConfig } from '@graphql-codegen/cli'
 
-import { env } from '@/constant/env'
+import 'dotenv/config'
+import { z } from 'zod'
+
+const schema = z.string().min(1)
 
 const config: CodegenConfig = {
   documents: 'src/**/*.tsx',
@@ -18,7 +21,7 @@ const config: CodegenConfig = {
   },
   ignoreNoDocuments: true,
   overwrite: true,
-  schema: env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,
+  schema: schema.parse(process.env['NEXT_PUBLIC_GRAPHQL_ENDPOINT']),
 }
 
 export default config
