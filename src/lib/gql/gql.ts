@@ -1,6 +1,6 @@
 /* eslint-disable */
 import * as types from './graphql'
-import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core'
+import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core'
 
 /**
  * Map of all GraphQL operations in the project.
@@ -13,10 +13,14 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-  '\n  query PokemonListQuery {\n    pokemons(first: 999) {\n      id\n      ...PokemonCard_pokemon\n    }\n  }\n':
+  '\n  query PokemonDetailQuery($name: String) {\n    pokemon(name: $name) {\n      ...PokemonCard_pokemon\n    }\n  }\n':
+    types.PokemonDetailQueryDocument,
+  '\n  query PokemonListQuery {\n    pokemons(first: 151) {\n      id\n      name\n      ...PokemonTag_pokemon\n    }\n  }\n':
     types.PokemonListQueryDocument,
-  '\n  fragment PokemonCard_pokemon on Pokemon {\n    name\n  }\n':
+  '\n  fragment PokemonCard_pokemon on Pokemon {\n    name\n    image\n    evolutions {\n      name\n      image\n      id\n    }\n  }\n':
     types.PokemonCard_PokemonFragmentDoc,
+  '\n  fragment PokemonTag_pokemon on Pokemon {\n    name\n  }\n':
+    types.PokemonTag_PokemonFragmentDoc,
 }
 
 /**
@@ -37,14 +41,26 @@ export function graphql(source: string): unknown
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  query PokemonListQuery {\n    pokemons(first: 999) {\n      id\n      ...PokemonCard_pokemon\n    }\n  }\n'
-): (typeof documents)['\n  query PokemonListQuery {\n    pokemons(first: 999) {\n      id\n      ...PokemonCard_pokemon\n    }\n  }\n']
+  source: '\n  query PokemonDetailQuery($name: String) {\n    pokemon(name: $name) {\n      ...PokemonCard_pokemon\n    }\n  }\n'
+): (typeof documents)['\n  query PokemonDetailQuery($name: String) {\n    pokemon(name: $name) {\n      ...PokemonCard_pokemon\n    }\n  }\n']
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n  fragment PokemonCard_pokemon on Pokemon {\n    name\n  }\n'
-): (typeof documents)['\n  fragment PokemonCard_pokemon on Pokemon {\n    name\n  }\n']
+  source: '\n  query PokemonListQuery {\n    pokemons(first: 151) {\n      id\n      name\n      ...PokemonTag_pokemon\n    }\n  }\n'
+): (typeof documents)['\n  query PokemonListQuery {\n    pokemons(first: 151) {\n      id\n      name\n      ...PokemonTag_pokemon\n    }\n  }\n']
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  fragment PokemonCard_pokemon on Pokemon {\n    name\n    image\n    evolutions {\n      name\n      image\n      id\n    }\n  }\n'
+): (typeof documents)['\n  fragment PokemonCard_pokemon on Pokemon {\n    name\n    image\n    evolutions {\n      name\n      image\n      id\n    }\n  }\n']
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n  fragment PokemonTag_pokemon on Pokemon {\n    name\n  }\n'
+): (typeof documents)['\n  fragment PokemonTag_pokemon on Pokemon {\n    name\n  }\n']
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {}

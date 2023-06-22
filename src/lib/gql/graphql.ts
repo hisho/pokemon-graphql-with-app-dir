@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core'
+import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core'
 export type Maybe<T> = T | null
 export type InputMaybe<T> = Maybe<T>
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -121,14 +121,29 @@ export type QueryPokemonsArgs = {
   first: Scalars['Int']['input']
 }
 
+export type PokemonDetailQueryQueryVariables = Exact<{
+  name?: InputMaybe<Scalars['String']['input']>
+}>
+
+export type PokemonDetailQueryQuery = {
+  __typename?: 'Query'
+  pokemon?:
+    | ({ __typename?: 'Pokemon' } & {
+        ' $fragmentRefs'?: {
+          PokemonCard_PokemonFragment: PokemonCard_PokemonFragment
+        }
+      })
+    | null
+}
+
 export type PokemonListQueryQueryVariables = Exact<{ [key: string]: never }>
 
 export type PokemonListQueryQuery = {
   __typename?: 'Query'
   pokemons?: Array<
-    | ({ __typename?: 'Pokemon'; id: string } & {
+    | ({ __typename?: 'Pokemon'; id: string; name?: string | null } & {
         ' $fragmentRefs'?: {
-          PokemonCard_PokemonFragment: PokemonCard_PokemonFragment
+          PokemonTag_PokemonFragment: PokemonTag_PokemonFragment
         }
       })
     | null
@@ -138,7 +153,19 @@ export type PokemonListQueryQuery = {
 export type PokemonCard_PokemonFragment = {
   __typename?: 'Pokemon'
   name?: string | null
+  image?: string | null
+  evolutions?: Array<{
+    __typename?: 'Pokemon'
+    name?: string | null
+    image?: string | null
+    id: string
+  } | null> | null
 } & { ' $fragmentName'?: 'PokemonCard_PokemonFragment' }
+
+export type PokemonTag_PokemonFragment = {
+  __typename?: 'Pokemon'
+  name?: string | null
+} & { ' $fragmentName'?: 'PokemonTag_PokemonFragment' }
 
 export const PokemonCard_PokemonFragmentDoc = {
   kind: 'Document',
@@ -152,11 +179,118 @@ export const PokemonCard_PokemonFragmentDoc = {
       },
       selectionSet: {
         kind: 'SelectionSet',
-        selections: [{ kind: 'Field', name: { kind: 'Name', value: 'name' } }],
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'image' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'evolutions' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'image' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+              ],
+            },
+          },
+        ],
       },
     },
   ],
 } as unknown as DocumentNode<PokemonCard_PokemonFragment, unknown>
+export const PokemonTag_PokemonFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'PokemonTag_pokemon' },
+      typeCondition: {
+        kind: 'NamedType',
+        name: { kind: 'Name', value: 'Pokemon' },
+      },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [{ kind: 'Field', name: { kind: 'Name', value: 'name' } }],
+      },
+    },
+  ],
+} as unknown as DocumentNode<PokemonTag_PokemonFragment, unknown>
+export const PokemonDetailQueryDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'PokemonDetailQuery' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'name' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'pokemon' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'name' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'name' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'FragmentSpread',
+                  name: { kind: 'Name', value: 'PokemonCard_pokemon' },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'PokemonCard_pokemon' },
+      typeCondition: {
+        kind: 'NamedType',
+        name: { kind: 'Name', value: 'Pokemon' },
+      },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'image' } },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'evolutions' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'image' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  PokemonDetailQueryQuery,
+  PokemonDetailQueryQueryVariables
+>
 export const PokemonListQueryDocument = {
   kind: 'Document',
   definitions: [
@@ -174,16 +308,17 @@ export const PokemonListQueryDocument = {
               {
                 kind: 'Argument',
                 name: { kind: 'Name', value: 'first' },
-                value: { kind: 'IntValue', value: '999' },
+                value: { kind: 'IntValue', value: '151' },
               },
             ],
             selectionSet: {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
                 {
                   kind: 'FragmentSpread',
-                  name: { kind: 'Name', value: 'PokemonCard_pokemon' },
+                  name: { kind: 'Name', value: 'PokemonTag_pokemon' },
                 },
               ],
             },
@@ -193,7 +328,7 @@ export const PokemonListQueryDocument = {
     },
     {
       kind: 'FragmentDefinition',
-      name: { kind: 'Name', value: 'PokemonCard_pokemon' },
+      name: { kind: 'Name', value: 'PokemonTag_pokemon' },
       typeCondition: {
         kind: 'NamedType',
         name: { kind: 'Name', value: 'Pokemon' },
