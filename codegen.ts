@@ -13,6 +13,7 @@ const config: CodegenConfig = {
     },
     'src/lib/gql/': {
       config: {
+        dedupeFragments: true,
         defaultScalarType: 'unknown',
         enumsAsConst: true,
         exactOptionalPropertyTypes: true,
