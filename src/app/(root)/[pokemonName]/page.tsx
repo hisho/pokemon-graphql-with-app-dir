@@ -24,5 +24,9 @@ export default async function ({ params }: Props) {
     }
   )
 
-  return <div>{pokemon && <PokemonCard pokemon={pokemon} />}</div>
+  return (
+    <div className={'max-w-md mx-auto'}>
+      {pokemon && <PokemonCard pokemon={pokemon} />}
+    </div>
+  )
 }
