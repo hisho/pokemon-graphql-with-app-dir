@@ -150,23 +150,46 @@ export type PokemonListQueryQuery = {
   > | null
 }
 
-export type PokemonCard_PokemonFragment = {
+export type PokemonCard_PokemonFragment = ({
   __typename?: 'Pokemon'
   name?: string | null
   image?: string | null
-  evolutions?: Array<{
-    __typename?: 'Pokemon'
-    name?: string | null
-    image?: string | null
-    id: string
-  } | null> | null
-} & { ' $fragmentName'?: 'PokemonCard_PokemonFragment' }
+  classification?: string | null
+  number?: string | null
+} & {
+  ' $fragmentRefs'?: {
+    PokemonTypeTag_PokemonFragment: PokemonTypeTag_PokemonFragment
+  }
+}) & { ' $fragmentName'?: 'PokemonCard_PokemonFragment' }
 
 export type PokemonTag_PokemonFragment = {
   __typename?: 'Pokemon'
   name?: string | null
+  image?: string | null
 } & { ' $fragmentName'?: 'PokemonTag_PokemonFragment' }
 
+export type PokemonTypeTag_PokemonFragment = {
+  __typename?: 'Pokemon'
+  types?: Array<string | null> | null
+} & { ' $fragmentName'?: 'PokemonTypeTag_PokemonFragment' }
+
+export const PokemonTypeTag_PokemonFragmentDoc = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'PokemonTypeTag_pokemon' },
+      typeCondition: {
+        kind: 'NamedType',
+        name: { kind: 'Name', value: 'Pokemon' },
+      },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [{ kind: 'Field', name: { kind: 'Name', value: 'types' } }],
+      },
+    },
+  ],
+} as unknown as DocumentNode<PokemonTypeTag_PokemonFragment, unknown>
 export const PokemonCard_PokemonFragmentDoc = {
   kind: 'Document',
   definitions: [
@@ -182,19 +205,25 @@ export const PokemonCard_PokemonFragmentDoc = {
         selections: [
           { kind: 'Field', name: { kind: 'Name', value: 'name' } },
           { kind: 'Field', name: { kind: 'Name', value: 'image' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'classification' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'number' } },
           {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'evolutions' },
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'image' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-              ],
-            },
+            kind: 'FragmentSpread',
+            name: { kind: 'Name', value: 'PokemonTypeTag_pokemon' },
           },
         ],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'PokemonTypeTag_pokemon' },
+      typeCondition: {
+        kind: 'NamedType',
+        name: { kind: 'Name', value: 'Pokemon' },
+      },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [{ kind: 'Field', name: { kind: 'Name', value: 'types' } }],
       },
     },
   ],
@@ -211,7 +240,10 @@ export const PokemonTag_PokemonFragmentDoc = {
       },
       selectionSet: {
         kind: 'SelectionSet',
-        selections: [{ kind: 'Field', name: { kind: 'Name', value: 'name' } }],
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'image' } },
+        ],
       },
     },
   ],
@@ -261,6 +293,18 @@ export const PokemonDetailQueryDocument = {
     },
     {
       kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'PokemonTypeTag_pokemon' },
+      typeCondition: {
+        kind: 'NamedType',
+        name: { kind: 'Name', value: 'Pokemon' },
+      },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [{ kind: 'Field', name: { kind: 'Name', value: 'types' } }],
+      },
+    },
+    {
+      kind: 'FragmentDefinition',
       name: { kind: 'Name', value: 'PokemonCard_pokemon' },
       typeCondition: {
         kind: 'NamedType',
@@ -271,17 +315,11 @@ export const PokemonDetailQueryDocument = {
         selections: [
           { kind: 'Field', name: { kind: 'Name', value: 'name' } },
           { kind: 'Field', name: { kind: 'Name', value: 'image' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'classification' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'number' } },
           {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'evolutions' },
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'image' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-              ],
-            },
+            kind: 'FragmentSpread',
+            name: { kind: 'Name', value: 'PokemonTypeTag_pokemon' },
           },
         ],
       },
@@ -335,7 +373,10 @@ export const PokemonListQueryDocument = {
       },
       selectionSet: {
         kind: 'SelectionSet',
-        selections: [{ kind: 'Field', name: { kind: 'Name', value: 'name' } }],
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'image' } },
+        ],
       },
     },
   ],
