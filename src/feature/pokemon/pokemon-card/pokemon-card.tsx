@@ -1,29 +1,31 @@
-import { graphql } from '@/lib/gql'
-import { PokemonCard_PokemonFragment } from '@/lib/gql/graphql'
+import {
+  PokemonTypeTag,
+  PokemonTypeTag_pokemon,
+} from '@/feature/pokemon/pokemon-type-tag/pokemon-type-tag'
+import { FragmentType, graphql, useFragment } from '@/lib/gql'
 import Image from 'next/image'
 
 export const PokemonCard_pokemon = graphql(`
   fragment PokemonCard_pokemon on Pokemon {
     name
     image
-    evolutions {
-      name
-      image
-      id
-    }
+    classification
+    number
+    ...PokemonTypeTag_pokemon
   }
 `)
 
 type Props = {
-  pokemon: PokemonCard_PokemonFragment
+  pokemon: FragmentType<typeof PokemonCard_pokemon>
 }
 
-export const PokemonCard = ({ pokemon }: Props) => {
-  console.log(pokemon.evolutions)
+export const PokemonCard = (props: Props) => {
+  const pokemon = useFragment(PokemonCard_pokemon, props.pokemon)
+  const { types } = useFragment(PokemonTypeTag_pokemon, pokemon)
   return (
-    <div>
+    <div className={'shadow'}>
       <header>
-        <div className={'relative'} style={{ aspectRatio: 16 / 9 }}>
+        <div className={'relative aspect-video'}>
           {pokemon.image && (
             <Image
               alt={''}
@@ -34,7 +36,19 @@ export const PokemonCard = ({ pokemon }: Props) => {
           )}
         </div>
       </header>
-      <div>{pokemon.name}</div>
+      <div>
+        <p>No.{pokemon.number?.padStart(4, '0')}</p>
+        <h1>{pokemon.name}</h1>
+        {types && (
+          <ul className={'flex gap-1'}>
+            {types.map((type, index) => (
+              <li key={`${pokemon.number}_${type}_${index}`}>
+                <PokemonTypeTag pokemon={pokemon} />
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   )
 }
